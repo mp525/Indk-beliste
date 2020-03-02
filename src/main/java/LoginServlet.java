@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
@@ -28,6 +30,22 @@ public class LoginServlet extends HttpServlet {
             brugerMap.put("admin", "1234");
 
             servletContext.setAttribute("brugerMap", brugerMap);
+
+        }
+
+
+        if (((Set<String>) servletContext.getAttribute("aktiveBrugere") ) == null) {
+
+            Set<String> aktiveBrugere = new HashSet<>();
+            servletContext.setAttribute("aktiveBrugere", aktiveBrugere);
+
+
+        }
+
+
+        if (!(session.getAttribute("besked") == null) ){
+
+            request.getRequestDispatcher("WEB-INF/Huskeliste.jsp").forward(request,response);
 
         }
 
@@ -56,14 +74,24 @@ public class LoginServlet extends HttpServlet {
 
             }
 
-            session.setAttribute("besked", "Du er logget ind med navnet " + navn);
+            if (!((Set<String>) servletContext.getAttribute("aktiveBrugere") ).contains(navn)){
 
-            request.getRequestDispatcher("WEB-INF/Huskeliste.jsp").forward(request,response);
+                ((Set<String>) servletContext.getAttribute("aktiveBrugere") ).add(navn);
+
+                session.setAttribute("besked", "Du er logget ind med navnet " + navn);
+                session.setAttribute("navn", navn);
+
+                request.getRequestDispatcher("WEB-INF/Huskeliste.jsp").forward(request,response);
+
+
+
+            }
+
 
         }
 
         //todo gå til login dvs. index siden
-        request.setAttribute("besked", "din kode var forkert");
+        request.setAttribute("besked", "Der gik noget galt. Prøv igen.");
         request.getRequestDispatcher("index.jsp").forward(request,response);
 
 
