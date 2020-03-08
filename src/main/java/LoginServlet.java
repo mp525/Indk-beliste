@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             servletContext.setAttribute("aktiveBrugere", aktiveBrugere);
 
         }
-        
+
 
         if (!(session.getAttribute("besked") == null) ){
 
