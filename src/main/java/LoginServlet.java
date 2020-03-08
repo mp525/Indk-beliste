@@ -33,15 +33,12 @@ public class LoginServlet extends HttpServlet {
 
         }
 
-
         if (((Set<String>) servletContext.getAttribute("aktiveBrugere") ) == null) {
 
             Set<String> aktiveBrugere = new HashSet<>();
             servletContext.setAttribute("aktiveBrugere", aktiveBrugere);
 
-
         }
-
 
         if (!(session.getAttribute("besked") == null) ){
 
@@ -50,26 +47,17 @@ public class LoginServlet extends HttpServlet {
         }
 
 
-
         if (!((Map<String, String>) servletContext.getAttribute("brugerMap")).containsKey(navn)){
-
-
-
 
             request.setAttribute("besked", "Opret dig som bruger");
             request.getRequestDispatcher("WEB-INF/OpretBruger.jsp").forward(request,response);
-
-
 
         }
 
         if (((Map<String, String>) servletContext.getAttribute("brugerMap")).get(navn).equalsIgnoreCase(kodeord)){
 
-
-
             if (navn.equalsIgnoreCase("admin")){
 
-                //todo gå til adminside
                 request.getRequestDispatcher("WEB-INF/admin.jsp").forward(request,response);
 
             }
@@ -83,17 +71,12 @@ public class LoginServlet extends HttpServlet {
 
                 request.getRequestDispatcher("WEB-INF/Huskeliste.jsp").forward(request,response);
 
-
-
             }
-
 
         }
 
-        //todo gå til login dvs. index siden
         request.setAttribute("besked", "Der gik noget galt. Prøv igen.");
         request.getRequestDispatcher("index.jsp").forward(request,response);
-
 
     }
 
